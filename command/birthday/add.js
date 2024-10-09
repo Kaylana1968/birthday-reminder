@@ -2,12 +2,12 @@ import { InteractionResponseType } from "discord-interactions";
 import fs from "fs/promises";
 import path from "path";
 
-export default async function addBirthday(user, options, res) {
+export default async function add(user, options, res) {
   const name = options.find((option) => option.name === "name").value;
   const birthdate = options.find((option) => option.name === "birthdate").value;
 
-  const filePath = path.join(process.cwd(), "data", `${user.id}`);
-  const fileContent = JSON.parse(await fs.readFile(filePath));
+  const filePath = path.join(process.cwd(), "data", `${user.id}.txt`);
+  const fileContent = await fs.readFile(filePath, 'utf8');
 
   if (Object.keys(fileContent).includes(name)) {
     return res.send({
@@ -18,8 +18,7 @@ export default async function addBirthday(user, options, res) {
     });
   }
 
-  fileContent[name] = birthdate;
-  fs.writeFile(filePath, JSON.stringify(fileContent));
+  fs.writeFile(filePath, `${fileContent}${name}:${birthdate};`);
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

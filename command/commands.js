@@ -22,6 +22,11 @@ export default [
           },
         ],
       },
+      {
+        type: 1,
+        name: "list",
+        description: "Get your added birthdays list",
+      },
     ],
   },
 ];

@@ -1,9 +1,13 @@
-import addBirthday from "./add-birthday.js";
+import add from "./add.js";
+import list from "./list.js";
 
 export default function birthday(user, data, res) {
   switch (data.name) {
     case "add":
-      return addBirthday(user, data.options, res);
+      return add(user, data.options, res);
+
+    case "list":
+      return list(user, res);
 
     default:
       console.error(`unknown command: ${data.name}`);
