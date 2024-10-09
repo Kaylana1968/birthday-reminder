@@ -1,10 +1,13 @@
-import test from './test.js';
+import birthday from "./birthday/index.js";
 
-export default function executer(name, res) {
-  if (name === "test") {
-    return test(res);
+export default function executer(user, data, res) {
+  switch (data.name) {
+    case "birthday":
+      return birthday(user, data.options[0], res);
+
+    default:
+      console.error(`unknown command: ${data.name}`);
+
+      return res.status(400).json({ error: "unknown command" });
   }
-
-  console.error(`unknown command: ${name}`);
-  return res.status(400).json({ error: "unknown command" });
 }
