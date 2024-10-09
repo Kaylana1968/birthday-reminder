@@ -5,7 +5,7 @@ import {
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { InstallGlobalCommands } from './utils/utils.js';
+import { InstallGlobalCommands } from './utils/index.js';
 import commands from './command/commands.js'
 import executer from './command/index.js';
 
