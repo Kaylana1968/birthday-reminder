@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "ngrok:start": "cd.. & .\\ngrok http 3000"
+    "ngrok:start": "cd.. & .\\ngrok http --url=immune-warthog-carefully.ngrok-free.app 3000"
   },
   "license": "MIT",
   "dependencies": {

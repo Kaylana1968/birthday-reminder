@@ -6,15 +6,15 @@ export default async function list(user, res) {
   const filePath = path.join(process.cwd(), "data", `${user.id}.txt`);
   const fileContent = await fs.readFile(filePath, "utf8");
 
-  const datas = fileContent
+  const data = fileContent
     .split(";")
-    .filter((data) => data)
-    .map((data) => data.split(":"));
+    .filter((birthday) => birthday)
+    .map((birthday) => birthday.split(":"));
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: `${datas}`,
+      content: `${data}`,
     },
   });
 }
