@@ -3,28 +3,17 @@ import fs from 'fs/promises'
 import path from 'path'
 import { getDayDiff, getMonthString, splitDate } from '../../utils/calendar.js'
 
-function getDescription(data) {
-  const descriptionData = []
+function getBirthdayData(data) {
+  return data
+    .map(([name, birthdate]) => {
+      const { month, day } = splitDate(birthdate)
 
-  data.forEach(([name, birthdate]) => {
-    const { month, day } = splitDate(birthdate)
+      const date = `${getMonthString(month)} ${day}`
+      const dayDiff = getDayDiff({ month, day })
 
-    const dayDiff = getDayDiff({ month, day })
-
-    const namePart = `${name}\n`
-    const datePart = `  - ${getMonthString(month)} ${day}\n`
-    const diffPart = `  - ${dayDiff} days to birthday\n`
-
-    descriptionData.push({
-      text: `${namePart} ${datePart} ${diffPart}\n`,
-      dayDiff
+      return { name, date, dayDiff }
     })
-  })
-
-  return descriptionData
     .sort((a, b) => a.dayDiff - b.dayDiff)
-    .map((description, index) => `${index + 1}. ${description.text}`)
-    .join('')
 }
 
 export default async function list(user, res) {
@@ -36,15 +25,21 @@ export default async function list(user, res) {
     .filter(birthday => birthday)
     .map(birthday => birthday.split(':'))
 
-  const description = getDescription(data)
+  const birthdayData = getBirthdayData(data)
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       embeds: [
         {
-          title: `birthday list for ${user.global_name}`,
-          description: description
+          title: `Birthday list for ${user.global_name}`,
+          description: `-# Here is the list with all birthdays added by ${user.global_name}, note that this list is unique to each user`,
+          color: 0xffff00,
+          fields: birthdayData.map((data, index) => ({
+            name: data.name,
+            value: `- ${data.date}\n- Birthday in **${data.dayDiff} days**`,
+            inline: true
+          }))
         }
       ]
     }
