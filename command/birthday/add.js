@@ -20,7 +20,7 @@ function stringToDate(date) {
   return { month, day }
 }
 
-export default async function add(user, options, res) {
+export default async function add(user, options) {
   const name = options.find(option => option.name === 'name').value
   const birthdateString = options.find(
     option => option.name === 'birthdate'
@@ -29,12 +29,12 @@ export default async function add(user, options, res) {
   const birthdate = stringToDate(birthdateString)
 
   if (!birthdate) {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    return {
+      type: 4,
       data: {
         content: 'The date given is invalid, try again'
       }
-    })
+    }
   }
 
   const { month, day } = birthdate
@@ -44,12 +44,12 @@ export default async function add(user, options, res) {
 
   await writeBirthdayData(user, birthdayData)
 
-  return res.send({
-    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+  return {
+    type: 4,
     data: {
       content: `${name}, born on ${getMonthString(
         month
       )} ${day}, was successfully added`
     }
-  })
+  }
 }

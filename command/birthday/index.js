@@ -2,20 +2,25 @@ import add from './add.js'
 import list from './list.js'
 import remove from './remove.js'
 
-export default function birthday(user, data, res) {
+export default async function birthday(user, data) {
+  let response
   switch (data.name) {
     case 'add':
-      return add(user, data.options, res)
+      response = await add(user, data.options)
+      break
 
     case 'list':
-      return list(user, res)
-      
+      response = await list(user)
+      break
+
     case 'remove':
-      return remove(user, data.options, res)
+      response = await remove(user, data.options)
+      break
 
     default:
       console.error(`unknown command: ${data.name}`)
-
-      return res.status(400).json({ error: 'unknown command' })
+      response = null
   }
+
+  return response
 }

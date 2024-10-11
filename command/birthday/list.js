@@ -2,10 +2,10 @@ import { InteractionResponseType } from 'discord-interactions'
 import { getBirthdayData } from '../../utils/birthdayManager.js'
 import { getMonthString } from '../../utils/calendar.js'
 
-export default async function list(user, res) {
+export default async function list(user) {
   const birthdayData = await getBirthdayData(user)
 
-  return res.send({
+  return {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       embeds: [
@@ -23,5 +23,5 @@ export default async function list(user, res) {
         }
       ]
     }
-  })
+  }
 }

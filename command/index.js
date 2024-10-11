@@ -1,13 +1,18 @@
 import birthday from './birthday/index.js'
 
-export default function executer(user, data, res) {
+export default async function executer(user, data, res) {
+  let response
   switch (data.name) {
     case 'birthday':
-      return birthday(user, data.options[0], res)
+      response = await birthday(user, data.options[0])
+      break
 
     default:
       console.error(`unknown command: ${data.name}`)
-
-      return res.status(400).json({ error: 'unknown command' })
+      response = null
   }
+
+  return response
+    ? res.send(response)
+    : res.status(400).json({ error: 'unknown command' })
 }
