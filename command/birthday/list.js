@@ -1,31 +1,9 @@
 import { InteractionResponseType } from 'discord-interactions'
-import fs from 'fs/promises'
-import path from 'path'
-import { getDayDiff, getMonthString, splitDate } from '../../utils/calendar.js'
-
-function getBirthdayData(data) {
-  return data
-    .map(([name, birthdate]) => {
-      const { month, day } = splitDate(birthdate)
-
-      const date = `${getMonthString(month)} ${day}`
-      const dayDiff = getDayDiff({ month, day })
-
-      return { name, date, dayDiff }
-    })
-    .sort((a, b) => a.dayDiff - b.dayDiff)
-}
+import { getBirthdayData } from '../../utils/birthdayManager.js'
+import { getMonthString } from '../../utils/calendar.js'
 
 export default async function list(user, res) {
-  const filePath = path.join(process.cwd(), 'data', `${user.id}.txt`)
-  const fileContent = await fs.readFile(filePath, 'utf8')
-
-  const data = fileContent
-    .split(';')
-    .filter(birthday => birthday)
-    .map(birthday => birthday.split(':'))
-
-  const birthdayData = getBirthdayData(data)
+  const birthdayData = await getBirthdayData(user)
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -36,8 +14,10 @@ export default async function list(user, res) {
           description: `-# Here is the list with all birthdays added by ${user.global_name}, note that this list is unique to each user`,
           color: 0xffff00,
           fields: birthdayData.map((data, index) => ({
-            name: data.name,
-            value: `- ${data.date}\n- Birthday in **${data.dayDiff} days**`,
+            name: `${index + 1}. ${data.name}`,
+            value: `- ${getMonthString(data.month)} ${
+              data.day
+            }\n- Birthday in **${data.dayDiff} days**`,
             inline: true
           }))
         }

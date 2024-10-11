@@ -6,18 +6,18 @@ export default [
       {
         type: 1,
         name: 'add',
-        description: 'Add a birthday',
+        description: 'Add someone to your birthday list',
         options: [
           {
             type: 3,
             name: 'name',
-            description: "enter the person's name",
+            description: "The person's name",
             required: true
           },
           {
             type: 3,
             name: 'birthdate',
-            description: "enter the person's birth date (MM/DD)",
+            description: "The person's birth date (MM/DD)",
             required: true
           }
         ]
@@ -25,7 +25,21 @@ export default [
       {
         type: 1,
         name: 'list',
-        description: 'Get your added birthdays list'
+        description: 'Display your birthday list'
+      },
+      {
+        type: 1,
+        name: 'remove',
+        description: 'Remove someone from your birthday list',
+        options: [
+          {
+            type: 4,
+            name: 'number',
+            description:
+              'The number in your birthday list of the birthday to remove',
+            required: true
+          }
+        ]
       }
     ]
   }

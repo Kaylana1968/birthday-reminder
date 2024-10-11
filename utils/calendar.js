@@ -101,18 +101,21 @@ export function getDayDiff(date) {
   const thisMonth = today.getMonth() + 1
   const thisYear = today.getFullYear()
 
-  for (
-    let currentMonth = thisMonth;
-    currentMonth !== month;
-    currentMonth = currentMonth === 12 ? 1 : currentMonth + 1
-  ) {
-    diff -=
-      currentMonth === 2 &&
-      ((isLeapYear(thisYear) && thisMonth <= 2) ||
-        (isLeapYear(thisYear + 1) && thisMonth > 2))
-
-    diff += getMonthMaxDay(currentMonth)
+  if (month === thisMonth && diff > 0) {
+    return diff
   }
+
+  let currentMonth = thisMonth
+  do {
+    diff +=
+      currentMonth === 2 &&
+      !((isLeapYear(thisYear) && thisMonth <= 2) ||
+        (isLeapYear(thisYear + 1) && thisMonth > 2))
+        ? 28
+        : getMonthMaxDay(currentMonth)
+
+    currentMonth = currentMonth + 1 > 12 ? 1 : currentMonth + 1
+  } while (currentMonth !== month)
 
   return diff
 }

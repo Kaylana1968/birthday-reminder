@@ -1,6 +1,8 @@
 import { InteractionResponseType } from 'discord-interactions'
-import fs from 'fs/promises'
-import path from 'path'
+import {
+  getBirthdayData,
+  writeBirthdayData
+} from '../../utils/birthdayManager.js'
 import {
   getMonthMaxDay,
   getMonthString,
@@ -8,33 +10,25 @@ import {
 } from '../../utils/calendar.js'
 
 function stringToDate(date) {
-  if (!date.includes('/')) {
-    return false
-  }
+  if (!date.includes('/')) return
 
   const { month, day } = splitDate(date)
 
-  if (isNaN(month) || month < 1 || month > 12) {
-    return false
-  }
-
-  if (isNaN(day) || day < 1 || day > getMonthMaxDay(month)) {
-    return false
-  }
+  if (isNaN(month) || month < 1 || month > 12) return
+  if (isNaN(day) || day < 1 || day > getMonthMaxDay(month)) return
 
   return { month, day }
 }
 
 export default async function add(user, options, res) {
   const name = options.find(option => option.name === 'name').value
-  const birthdate = options.find(option => option.name === 'birthdate').value
+  const birthdateString = options.find(
+    option => option.name === 'birthdate'
+  ).value
 
-  const filePath = path.join(process.cwd(), 'data', `${user.id}.txt`)
-  const fileContent = await fs.readFile(filePath, 'utf8')
+  const birthdate = stringToDate(birthdateString)
 
-  const birthdateData = stringToDate(birthdate)
-
-  if (!birthdateData) {
+  if (!birthdate) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
@@ -43,9 +37,12 @@ export default async function add(user, options, res) {
     })
   }
 
-  fs.writeFile(filePath, `${fileContent}${name}:${birthdate};`)
+  const { month, day } = birthdate
 
-  const { month, day } = birthdateData
+  const birthdayData = await getBirthdayData(user)
+  birthdayData.push({ name, month, day })
+
+  await writeBirthdayData(user, birthdayData)
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
