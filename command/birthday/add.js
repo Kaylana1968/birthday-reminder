@@ -1,4 +1,3 @@
-import { InteractionResponseType } from 'discord-interactions'
 import {
   getBirthdayData,
   writeBirthdayData
@@ -8,6 +7,7 @@ import {
   getMonthString,
   splitDate
 } from '../../utils/calendar.js'
+import { createEphemeralMessage } from '../../utils/discord.js'
 
 function stringToDate(date) {
   if (!date.includes('/')) return
@@ -29,12 +29,9 @@ export default async function add(user, options) {
   const birthdate = stringToDate(birthdateString)
 
   if (!birthdate) {
-    return {
-      type: 4,
-      data: {
-        content: 'The date given is invalid, try again'
-      }
-    }
+    return createEphemeralMessage({
+      content: 'The date given is invalid, try again'
+    })
   }
 
   const { month, day } = birthdate
@@ -44,12 +41,9 @@ export default async function add(user, options) {
 
   await writeBirthdayData(user, birthdayData)
 
-  return {
-    type: 4,
-    data: {
-      content: `${name}, born on ${getMonthString(
-        month
-      )} ${day}, was successfully added`
-    }
-  }
+  return createEphemeralMessage({
+    content: `${name}, born on ${getMonthString(
+      month
+    )} ${day}, was successfully added`
+  })
 }

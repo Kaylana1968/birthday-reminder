@@ -36,3 +36,20 @@ export async function InstallGlobalCommands(appId, commands) {
     console.error(err)
   }
 }
+
+export function createEphemeralMessage(data) {
+  return {
+    type: 4,
+    data: {
+      flags: 1 << 6,
+      ...data
+    }
+  }
+}
+
+export function createMessage(data) {
+  return {
+    type: 4,
+    data
+  }
+}
