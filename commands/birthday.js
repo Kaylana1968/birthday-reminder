@@ -1,4 +1,4 @@
-const birthday = {
+export const birthday = {
   name: 'birthday',
   description: 'Birthday related stuff.',
   options: [
@@ -42,5 +42,3 @@ const birthday = {
     }
   ]
 }
-
-export default [birthday]

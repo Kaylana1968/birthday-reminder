@@ -1,5 +1,5 @@
-import { getBirthdayData } from '../../utils/birthdayManager.js'
-import { getMonthString } from '../../utils/calendar.js'
+import { getBirthdayData } from '../../utils/filesUtils/birthday.js'
+import { monthString } from '../../utils/constants/birthday.js'
 import { createEphemeralMessage } from '../../utils/discord.js'
 
 export default async function list(user) {
@@ -13,9 +13,9 @@ export default async function list(user) {
         color: 0xffff00,
         fields: birthdayData.map((data, index) => ({
           name: `${index + 1}. ${data.name}`,
-          value: `- ${getMonthString(data.month)} ${
-            data.day
-          }\n- Birthday in **${data.dayDiff} days**`,
+          value: `- ${monthString[data.month]} ${data.day}\n- Birthday in **${
+            data.dayDiff
+          } days**`,
           inline: true
         }))
       }

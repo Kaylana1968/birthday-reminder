@@ -1,6 +1,6 @@
 import fs from 'fs/promises'
 import path from 'path'
-import { getDayDiff, splitDate } from './calendar.js'
+import { getDayDiff, splitDate } from '../helpers/birthday.js'
 
 export async function getBirthdayData(user) {
   const filePath = path.join(process.cwd(), 'data', `${user.id}.txt`)

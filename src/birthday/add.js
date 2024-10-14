@@ -1,12 +1,9 @@
 import {
   getBirthdayData,
   writeBirthdayData
-} from '../../utils/birthdayManager.js'
-import {
-  getMonthMaxDay,
-  getMonthString,
-  splitDate
-} from '../../utils/calendar.js'
+} from '../../utils/filesUtils/birthday.js'
+import { monthMaxDay, monthString } from '../../utils/constants/birthday.js'
+import { splitDate } from '../../utils/helpers/birthday.js'
 import { createEphemeralMessage } from '../../utils/discord.js'
 
 function stringToDate(date) {
@@ -15,7 +12,7 @@ function stringToDate(date) {
   const { month, day } = splitDate(date)
 
   if (isNaN(month) || month < 1 || month > 12) return
-  if (isNaN(day) || day < 1 || day > getMonthMaxDay(month)) return
+  if (isNaN(day) || day < 1 || day > monthMaxDay[month]) return
 
   return { month, day }
 }
@@ -42,8 +39,6 @@ export default async function add(user, options) {
   await writeBirthdayData(user, birthdayData)
 
   return createEphemeralMessage({
-    content: `${name}, born on ${getMonthString(
-      month
-    )} ${day}, was successfully added`
+    content: `${name}, born on ${monthString[month]} ${day}, was successfully added`
   })
 }

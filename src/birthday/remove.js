@@ -1,8 +1,8 @@
 import {
   getBirthdayData,
   writeBirthdayData
-} from '../../utils/birthdayManager.js'
-import { getMonthString } from '../../utils/calendar.js'
+} from '../../utils/filesUtils/birthday.js'
+import { monthString } from '../../utils/constants/birthday.js'
 import { createEphemeralMessage } from '../../utils/discord.js'
 
 export default async function remove(user, options) {
@@ -26,8 +26,6 @@ export default async function remove(user, options) {
   const { name, month, day } = removedBirthday
 
   return createEphemeralMessage({
-    content: `${name}, born on ${getMonthString(
-      month
-    )} ${day}, was successfully removed`
+    content: `${name}, born on ${monthString[month]} ${day}, was successfully removed`
   })
 }

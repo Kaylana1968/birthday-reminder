@@ -6,8 +6,8 @@ import {
   verifyKeyMiddleware
 } from 'discord-interactions'
 import { InstallGlobalCommands } from './utils/discord.js'
-import commands from './command/commands.js'
-import executer from './command/index.js'
+import commands from './commands/index.js'
+import executer from './src/index.js' 
 
 // Create an express app
 const app = express()
