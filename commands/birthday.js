@@ -30,15 +30,15 @@ export const birthday = {
       type: 1,
       name: 'remove',
       description: 'Remove someone from your birthday list',
-      options: [
-        {
-          type: 4,
-          name: 'number',
-          description:
-            'The number in your birthday list of the birthday to remove',
-          required: true
-        }
-      ]
+      // options: [
+      //   {
+      //     type: 4,
+      //     name: 'number',
+      //     description:
+      //       'The number in your birthday list of the birthday to remove',
+      //     required: true
+      //   }
+      // ]
     }
   ]
 }

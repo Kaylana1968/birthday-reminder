@@ -7,7 +7,7 @@ import {
 } from 'discord-interactions'
 import { InstallGlobalCommands } from './utils/discord.js'
 import commands from './commands/index.js'
-import executer from './src/index.js' 
+import executer from './src/index.js'
 
 // Create an express app
 const app = express()
@@ -39,7 +39,11 @@ app.post(
      * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
      */
     if (type === InteractionType.APPLICATION_COMMAND) {
-      return executer(member.user, data, res)
+      const response = executer(member.user, data)
+
+      return response
+        ? res.send(response)
+        : res.status(400).json({ error: 'unknown command' })
     }
 
     console.error('unknown interaction type', type)
